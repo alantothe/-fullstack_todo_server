@@ -6,19 +6,20 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const todosRouter = require('./routes/todosRouter'); // import todosRouter
 
 var app = express();
 
 const cors = require("cors");
 require("dotenv").config();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 var { mongoConnect } = require('./mongo.js');
 mongoConnect();
-
-var app = express();
 
 app.use(cors());
 app.options("*", cors());
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api', todosRouter); // add todosRouter at "/api" endpoint
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
